@@ -66,9 +66,9 @@ async function run(){
             
         });
 
-        //-----email
+        //-----email-query
         app.get('/reviewsss', async(req,res) => {
-            console.log(req.query.email)
+            // console.log(req.query.email)
             let query = {};
             if(req.query.email){
                 query={
@@ -78,7 +78,17 @@ async function run(){
             const cursor = reviewCollection.find(query);
             const service = await cursor.toArray()
             res.send(service)
+        });
+
+        //delete
+
+        app.delete('/revieww/:id', async(req,res) => {
+            const id = req.params.id;
+            const query = {_id: ObjectId(id)};
+            const result = await reviewCollection.deleteOne(query);
+            res.send(result);
         })
+
 
     }
 
