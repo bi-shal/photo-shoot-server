@@ -26,6 +26,17 @@ async function run(){
         const serviceCollection = client.db('photoSoot').collection('services')
         const reviewCollection = client.db('photoSoot').collection('review')
 
+        //JWT
+        app.post('/jwt',(req,res) => {
+            const user = req.body;
+            // console.log(user);
+            const token = jwt.sign(user,process.env.ACCESS_TOKEN_SECRET, {expiresIn:'1hr'})
+            console.log({token});
+            res.send({token})
+        })
+
+
+
         app.get('/servicess', async(req,res) => {
             const query = {}
             const cursor = serviceCollection.find(query).limit(3);
