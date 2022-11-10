@@ -13,10 +13,6 @@ app.use(cors());
 app.use(express.json());
 
 
-
-// console.log(process.env.DB_USER)
-// console.log(process.env.DB_PASSWORD)
-
 //mongodb
 
 const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASSWORD}@cluster0.eubulyg.mongodb.net/?retryWrites=true&w=majority`;
@@ -64,13 +60,22 @@ async function run(){
             const services = await cursor.toArray();
             res.send(services)
         });
-
+//all
         app.get('/servicessAll', async(req,res) => {
             const query = {}
             const cursor = serviceCollection.find(query);
             const services = await cursor.toArray();
             res.send(services)
         })
+
+//add
+        app.post('/servicessAll', async(req,res) => {
+            const order = req.body;
+            console.log(order)
+            const result = await serviceCollection.insertOne(order)
+            res.send(result)
+        });
+
 
 
         app.get('/servicess/:id', async(req,res) => {
@@ -108,7 +113,6 @@ const decoded = req.decoded;
 if (decoded.email !== req.query.email){
  res.status(403).send({message:'unauthorized access'})
 }
-
 
             let query = {};
             if(req.query.email){
